@@ -1,0 +1,19 @@
+/// note : .a extension. A static library is a self-contained library that is linked with the binary at compile time.
+
+#include "seqpi.h"
+
+// int classname::func{return -- };
+
+//pragma once
+
+class classname{
+  public:
+   static func(param);
+}
+
+
+g++ -c -o MyLibrary.o MyLibrary.cpp
+
+The -c flag tells the compiler to not link the library
+
+ar rcs MyLibrary.a MyLibrary.o
