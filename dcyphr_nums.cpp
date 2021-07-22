@@ -4,51 +4,62 @@
 #include <string>
 #include <unistd.h>
 #include <fstream>
+#include <sstream>
 
 using namespace std;
 
-string pi_value;
+string num_val;
 
-void getpi(){
-  ifstream leerpi;
-  leerpi.open("./seqpi/pitxt.txt", ifstream :: in);
-
-    while(!leerpi.eof()) {
+void get_number(string num){
+  ifstream numfile;
+  
+  if (num == "pi"){
+    numfile.open("./seqpi/pitxt.txt", ifstream :: in);
+  }else if (num == "phi"){
+    numfile.open("./seqpi/phitxt.txt", ifstream :: in);
+  }else if (num == "e"){
+    numfile.open("./seqpi/etxt.txt", ifstream :: in);
+  }else return;
+  
+    while(!numfile.eof()) {
     string linea;
-    getline(leerpi,linea);
-    pi_value = linea;
+    getline(numfile,linea);
+    num_val += linea;
   }
-  leerpi.close();
+  numfile.close();
 }
 
-void feel_Datapi (int dim, int max,int* reps,int lim_izq){     // dec system: h = 9, count system interactions possible
+string colors[11];
+
+void access_number (int dim, int max,int* reps,int lim_izq){     // dec system: h = 9, count system interactions possible
   string cols[max+2][dim+1];
 
   static int dt = lim_izq;
   int val_y;
   string plot;
-
+  
   if (dt == lim_izq){
-    for (int i = lim_izq; i < dim+lim_izq; i++) reps[stoi(string(1,pi_value[i]))]++;
+    for (int i = lim_izq; i < dim+lim_izq; i++) reps[stoi(string(1,num_val[i]))]++;
   }
-  else reps[stoi(string(1,pi_value[dt+dim-1]))]++; // if not dec sys -> pi_v[x] > len(1) V p[x] -T->: p_sys(p[x])
+  else reps[stoi(string(1,num_val[dt+dim-1]))]++; // if not dec sys -> pi_v[x] > len(1) V p[x] -T->: p_sys(p[x])
 
   for(int x = dt; x < dim+dt; x++){
-      val_y = stoi(string(1,pi_value[x]));                    
+      val_y = stoi(string(1,num_val[x]));
+      string color = colors[val_y];                    
 
         for (int j = max; j >= val_y; j--){
           cols[j][x-dt] = " ";
 
         }
-                      
+                       
         for (int k = 0; k < val_y; k++){
           //cols[k][x-dt] = "Ø";
-          cols[k][x-dt] = "█";
+          cols[k][x-dt] = color+"█"+colors[10];
         }
 
   }
 
-  plot.append("\t\b______________\n\t visual PI\n");
+  plot.append("\t\b______________\n\t cypher analyzer\n");
   for (int j = max; j >= 0;j--){
 
         for (int i = 0; i < dim; i++){
@@ -63,7 +74,7 @@ void feel_Datapi (int dim, int max,int* reps,int lim_izq){     // dec system: h 
 
   for (int i = dt; i < dim+dt; i++){
     plot.append("  ");
-    plot += pi_value[i];      
+    plot += num_val[i];      
   }
 
   cout<<plot<<endl;
@@ -74,28 +85,32 @@ void feel_Datapi (int dim, int max,int* reps,int lim_izq){     // dec system: h 
 
 
 int main(int argc, char** argv) {
+
+  if (argc < 5){
+    cout<<"ARGV: number, from, to, width-term, time\n\tpi,phi,e"<<endl;
+    return 0;
+  }
   
 srand(time(NULL));
 
-cout<<" Visualizar distribución de cifras de pi.\n\n"<<endl;
-cout<<"_________obteniendo pi. . ."<<endl;
+cout<<" Visualizar distribución de cifras de "<<argv[1]<<"\n\n"<<endl;
+cout<<"_________obteniendo cifras. . ."<<endl;
+get_number(string(argv[1]));
 
-getpi();
-
-cout<<"\n π = 3. ";
-for (int ix = 1; ix < 10; ix++){
-  cout<<pi_value[ix]<<" ";
+cout<<"\n   Δ π = ";
+for (int ix = 0; ix < 10; ix++){
+  cout<<num_val[ix]<<" ";
+  ostringstream oss;
+  oss << "\x1b[38;5;"<<ix+1<<"m";
+  colors[ix] = oss.str();
+  oss.clear();
 }
-cout<<". . ."<<endl;
-
-if (argc < 4){
-  cout<<"ARGV: from, to, width-term, time"<<endl;
-  return 0;
-}
+cout<<". . .\n"<<endl;
+colors[10] = "\x1b[0m";
 
 
 int pirange_a, pirange_b, width;
-pirange_a = atoi(argv[1]), pirange_b = atoi(argv[2]), width = atoi(argv[3]);
+pirange_a = atoi(argv[2]), pirange_b = atoi(argv[3]), width = atoi(argv[4]);
 
 if (pirange_b < pirange_a){
   int x = pirange_b;
@@ -125,13 +140,13 @@ cin.get();
 for (int dt = 0; dt < ncifras-width+1; dt++){
   usleep(dts);
   if (dt < ncifras-width+1) system("clear");
-  feel_Datapi(width, 11, cphrcount,pirange_a);
+  access_number(width, 10, cphrcount,pirange_a);
   
 }
 
 int suma = 0;
 
-cout<<"_____________________________\n Resultados:\n"<<endl;
+cout<<"_____________________________\n   Resultados   | "<<argv[1]<<" :\n"<<endl;
 for (int i = 0; i < 10; i++){
   cout<<"\t#"<<i<<" salió "<<cphrcount[i]<<" veces\n";
   suma += cphrcount[i];

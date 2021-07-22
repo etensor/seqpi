@@ -4,6 +4,7 @@
 #include <string>
 #include <unistd.h>
 #include <fstream>
+#include <sstream>
 
 using namespace std;
 
@@ -21,29 +22,32 @@ void getpi(){
   leerpi.close();
 }
 
+string colors[11];
+
 void feel_Datapi (int dim, int max,int* reps,int lim_izq){     // dec system: h = 9, count system interactions possible
   string cols[max+2][dim+1];
 
   static int dt = lim_izq;
   int val_y;
   string plot;
-
+  
   if (dt == lim_izq){
     for (int i = lim_izq; i < dim+lim_izq; i++) reps[stoi(string(1,pi_value[i]))]++;
   }
   else reps[stoi(string(1,pi_value[dt+dim-1]))]++; // if not dec sys -> pi_v[x] > len(1) V p[x] -T->: p_sys(p[x])
 
   for(int x = dt; x < dim+dt; x++){
-      val_y = stoi(string(1,pi_value[x]));                    
+      val_y = stoi(string(1,pi_value[x]));
+      string color = colors[val_y];                    
 
         for (int j = max; j >= val_y; j--){
           cols[j][x-dt] = " ";
 
         }
-                      
+                       
         for (int k = 0; k < val_y; k++){
           //cols[k][x-dt] = "Ø";
-          cols[k][x-dt] = "█";
+          cols[k][x-dt] = color+"█"+colors[10];
         }
 
   }
@@ -79,14 +83,18 @@ srand(time(NULL));
 
 cout<<" Visualizar distribución de cifras de pi.\n\n"<<endl;
 cout<<"_________obteniendo pi. . ."<<endl;
-
 getpi();
 
-cout<<"\n π = 3. ";
-for (int ix = 1; ix < 10; ix++){
+cout<<"\n Δ π = ";
+for (int ix = 0; ix < 10; ix++){
   cout<<pi_value[ix]<<" ";
+  ostringstream oss;
+  oss << "\x1b[38;5;"<<ix+1<<"m";
+  colors[ix] = oss.str();
+  oss.clear();
 }
 cout<<". . ."<<endl;
+colors[10] = "\x1b[0m";
 
 if (argc < 4){
   cout<<"ARGV: from, to, width-term, time"<<endl;
@@ -125,7 +133,7 @@ cin.get();
 for (int dt = 0; dt < ncifras-width+1; dt++){
   usleep(dts);
   if (dt < ncifras-width+1) system("clear");
-  feel_Datapi(width, 11, cphrcount,pirange_a);
+  feel_Datapi(width, 10, cphrcount,pirange_a);
   
 }
 

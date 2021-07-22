@@ -1,0 +1,3 @@
+	of Pi there are 210000 chars
+	of Phi there are 21000
+	of e	there are 10000
