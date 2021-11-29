@@ -97,16 +97,29 @@ cout<<" Visualizar distribución de cifras de "<<argv[1]<<"\n\n"<<endl;
 cout<<"_________obteniendo cifras. . ."<<endl;
 get_number(string(argv[1]));
 
-cout<<"\n   Δ π = ";
+string num = string(argv[1]);
+string color_tagsu;
+string color_tagsd;
+
+if (num == "pi")  num = "π"; 
+if (num == "phi") num = "φ";
+
+cout << "\n\t λ "<<num<<" = ";
 for (int ix = 0; ix < 10; ix++){
   cout<<num_val[ix]<<" ";
+  if (ix == 0) cout<<"\b. ";
   ostringstream oss;
-  oss << "\x1b[38;5;"<<ix+1<<"m";
+  oss << "\x1b[38;5;"<<ix<<"m";
   colors[ix] = oss.str();
+  color_tagsu += colors[ix] + "██\x1b[0m | ";
+  color_tagsd += " "+to_string(ix) + " | ";
   oss.clear();
 }
 cout<<". . .\n"<<endl;
 colors[10] = "\x1b[0m";
+
+cout<<"   _________________________________________________\n";
+cout<<"  | "<<color_tagsu<<"\n  | "<<color_tagsd<<"\n  ---------------------------------------------------\n"<<endl;
 
 
 int pirange_a, pirange_b, width;
@@ -126,12 +139,12 @@ int* cphrcount = new int[10] {0}; // 0-9 system count
 //for (int i = 0; i < 10; i++) cphrcount[i] = 0;
 
 int dts;
-cout<<"\t x cifras : "<<ncifras<<endl;
+cout<<"\t   x cifras : "<<ncifras<<endl;
 cout<<"\n\tdesde cifra : "<<pirange_a<<endl;
 cout<<"\n\thasta cifra : "<<pirange_b<<endl;
 
 dts = atoi(argv[4]);
-cout<<"\n dt (millisecs): "<<dts<<endl;
+cout<<"\n     dt (millisecs) : "<<dts<<endl;
 dts *= 1000;
 
 cout<<"\v press enter";
