@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <fstream>
 #include <sstream>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -159,14 +160,36 @@ for (int dt = 0; dt < ncifras-width+1; dt++){
 
 int suma = 0;
 
+// v2 -> 0-9 system count : find extension
+auto lmax = *(max_element(cphrcount, cphrcount + 10)); // still imposing dec sys
+auto lmin = *(min_element(cphrcount, cphrcount + 10));
+
+int h = lmax - lmin + 2;
+string res_dist[10]{};
+for (int i = 0; i < 10; i++){
+  for (int j = int(lmin); j < int(lmax) + 2; j++){
+    if (j <= cphrcount[i])
+      res_dist[i] += "█";
+    else
+      res_dist[i] += " ";
+  }
+}
+
+
 cout<<"_____________________________\n   Resultados   | "<<argv[1]<<" :\n"<<endl;
 for (int i = 0; i < 10; i++){
-  cout<<"\t#"<<i<<" salió "<<cphrcount[i]<<" veces\n";
+  cout<<"\t#"<<i<<" -> "<<cphrcount[i]<<" | "<<res_dist[i]<<"\n";
   suma += cphrcount[i];
 }
 cout<<"\n\t | "<<suma<<" cifras analizadas."<<endl;
+
+
+
+
+
 
 delete[] cphrcount;
 
 return 0;
 }
+
