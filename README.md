@@ -1,5 +1,8 @@
 # seqpi
 
+![seqpi gif example](https://media.giphy.com/media/1DmOOHZNgRZH3eps8A/giphy.gif)
+---
+
 Al principio solo era un visualizador de una cadena de números aleatorios.
 Luego lo adapté para ver las cifras de pi, y para darle mas control le di argumentos,
 luego colores y luego dos números más, phi y e. 
