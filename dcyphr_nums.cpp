@@ -6,6 +6,10 @@
 #include <fstream>
 #include <sstream>
 #include <bits/stdc++.h>
+#define FMT_HEADER_ONLY
+#include <fmt/core.h>
+// #include <format> not yet
+// https://fmt.dev/latest/index.html
 
 using namespace std;
 
@@ -176,9 +180,18 @@ for (int i = 0; i < 10; i++){
 }
 
 
-cout<<"_____________________________\n   Resultados   | "<<argv[1]<<" :\n"<<endl;
+// cout<<"_____________________________\n   Resultados   | "<<argv[1]<<" :\n"<<endl;
+// fmt is cool
+
+fmt::print(
+    "\t┌{0:─^{2}}┐\n"
+    "\t│{1: ^{2}}│\n"
+    "\t└{0:─^{2}}┘\n",
+    "", fmt::format("Resultados | {}",argv[1]), 20);
+
 for (int i = 0; i < 10; i++){
-  cout<<"\t#"<<i<<" -> "<<cphrcount[i]<<" | "<<res_dist[i]<<"\n";
+  cout<<fmt::format("\t  #{} ==> {:^5} |\t{} \n",i,cphrcount[i],res_dist[i]);
+  // phrcount[i]<<" | "<<res_dist[i]<<"\n";
   suma += cphrcount[i];
 }
 cout<<"\n\t | "<<suma<<" cifras analizadas."<<endl;
