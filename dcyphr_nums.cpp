@@ -92,7 +92,7 @@ void access_number (int dim, int max,int* reps,int lim_izq){     // dec system: 
 int main(int argc, char** argv) {
 
   if (argc < 5){
-    cout<<"ARGV: number, from, to, width-term, time\n\tpi,phi,e"<<endl;
+    cout<<"ARGV:\n\t number, from, to, width-term, time (delay)[ms]\n\tpi,phi,e"<<endl;
     return 0;
   }
   

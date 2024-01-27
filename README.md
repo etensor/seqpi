@@ -29,9 +29,35 @@ expects 5: in addition to the previous 4, it expects as first argument which num
 
 ### Or just compile it
 
+> ! Rememeber to have installed lfmt.
+
 ```bash
-g++ -std=c++20 dcypher-nums.cpp -o "cypherviz"
+#g++ -std=c++20 dcypher-nums.cpp -o "cypherviz"
+
+#updated (fmt)
+
+g++ -std=c++2a -lfmt dcypher-nums.cpp -o "cypvz" 
     
-./cypherviz 
+./cypvz
 ```
 :)
+
+---
+
+If you encounter a problem with fmt, rebuild and install the library:
+
+```bash
+    # Installing lfmt
+
+    #rm -rf "./fmt"
+
+    wget "https://github.com/fmtlib/fmt/releases/download/10.2.0/fmt-10.2.0.zip" #or latest version
+    unzip fmt-10.2.0.zip
+
+    # rebuild
+    cd fmt
+    mkdir build && cd build && cmake .. && sudo make install
+
+    #recompile with g++
+
+```
